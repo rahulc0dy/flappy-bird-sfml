@@ -11,11 +11,11 @@ int main()
 
     // Load a sprite to display
     const sf::Texture texture("assets/sprites/Player/StyleBird1.png");
-    sf::Sprite sprite(texture);
+    const sf::Sprite sprite(texture);
 
     // Create a graphical text to display
-    const sf::Font font("arial.ttf");
-    sf::Text text(font, "Hello SFML", 50);
+    const sf::Font font("assets/fonts/MegamaxJonathanToo.ttf");
+    const sf::Text text(font, "Hello SFML", 50);
 
     // // Load a music to play
     // sf::Music music("nice_music.ogg");

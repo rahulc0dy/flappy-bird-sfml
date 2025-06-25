@@ -32,7 +32,7 @@ target_include_directories(flappy_bird_sfml PRIVATE
 )
 
 # Copy assets to the output directory
-#file(COPY assets DESTINATION ${CMAKE_BINARY_DIR}/bin)
+file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
 
 # Copy SFML DLLs to the output directory
 file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/sfml-graphics-3.dll
