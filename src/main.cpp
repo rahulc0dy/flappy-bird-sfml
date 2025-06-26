@@ -1,8 +1,4 @@
-#include <iostream>
 #include <SFML/Graphics.hpp>
-#include <SFML/Window.hpp>
-#include <SFML/System.hpp>
-#include <SFML/Audio.hpp>
 
 int main()
 {
@@ -10,7 +6,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML window");
 
     // Load a sprite to display
-    const sf::Texture texture("assets/sprites/Player/StyleBird1.png");
+    const sf::Texture texture("assets/sprites/Player/StyleBird1/Bird1-1.png");
     const sf::Sprite sprite(texture);
 
     // Create a graphical text to display

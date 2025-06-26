@@ -1,43 +1,34 @@
 cmake_minimum_required(VERSION 3.31)
 
-set(CMAKE_SYSTEM_NAME Windows)
-set(CMAKE_C_COMPILER ${CMAKE_CURRENT_SOURCE_DIR}/mingw64/bin/gcc.exe)
-set(CMAKE_CXX_COMPILER ${CMAKE_CURRENT_SOURCE_DIR}/mingw64/bin/g++.exe)
+# Set the project name and version
+project(flappy_bird_sfml LANGUAGES CXX)
 
-project(flappy_bird_sfml)
-
+# Set the C++ standard to C++20
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(flappy_bird_sfml
+# Set the output directories for the executable and libraries
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_LIBRARY_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
+
+# Find and include the SFML library
+include(FetchContent)
+FetchContent_Declare(SFML
+        GIT_REPOSITORY https://github.com/SFML/SFML.git
+        GIT_TAG 3.0.1
+        GIT_SHALLOW ON
+        EXCLUDE_FROM_ALL
+        SYSTEM
+)
+FetchContent_MakeAvailable(SFML)
+
+# Set the Executable target
+add_executable(flappy_bird
         src/main.cpp
 )
 
-# Link directories
-link_directories(
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib
-        ${CMAKE_CURRENT_SOURCE_DIR}/bin
-)
-
-# SFML
-target_link_libraries(flappy_bird_sfml PRIVATE
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libsfml-graphics.a
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libsfml-audio.a
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libsfml-window.a
-        ${CMAKE_CURRENT_SOURCE_DIR}/lib/libsfml-system.a
-)
-
-
-target_include_directories(flappy_bird_sfml PRIVATE
-    include
-)
+# Set the C++ standard and link SFML libraries
+target_compile_features(flappy_bird PRIVATE cxx_std_20)
+target_link_libraries(flappy_bird PRIVATE SFML::Graphics)
 
 # Copy assets to the output directory
-file(COPY assets DESTINATION ${CMAKE_BINARY_DIR})
-
-# Copy SFML DLLs to the output directory
-file(COPY ${CMAKE_CURRENT_SOURCE_DIR}/bin/sfml-graphics-3.dll
-     ${CMAKE_CURRENT_SOURCE_DIR}/bin/sfml-audio-3.dll
-     ${CMAKE_CURRENT_SOURCE_DIR}/bin/sfml-window-3.dll
-     ${CMAKE_CURRENT_SOURCE_DIR}/bin/sfml-system-3.dll
-     DESTINATION ${CMAKE_BINARY_DIR}
-)
+file(COPY assets DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
