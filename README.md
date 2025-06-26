@@ -1,13 +1,51 @@
-On Windows, choosing 32 or 64-bit libraries should be based on which platform you want to compile for, not which OS you have. Indeed, you can perfectly compile and run a 32-bit program on a 64-bit Windows. So you'll most likely want to target 32-bit platforms, to have the largest possible audience. Choose 64-bit packages only if you have good reasons.
+# Flappy Bird SFML
 
-> [!CAUTION]
-> The compiler versions have to match 100%!
->
-> If you want to use a MinGW package, it is not enough that the GCC versions seemingly match, you have to use one of the following matching compilers:
->
-> [WinLibs UCRT 14.2.0 (32-bit)](https://github.com/brechtsanders/winlibs_mingw/releases/download/14.2.0posix-19.1.1-12.0.0-ucrt-r2/winlibs-i686-posix-dwarf-gcc-14.2.0-mingw-w64ucrt-12.0.0-r2.7z)  
-> [WinLibs UCRT 14.2.0 (64-bit)](https://github.com/brechtsanders/winlibs_mingw/releases/download/14.2.0posix-19.1.1-12.0.0-ucrt-r2/winlibs-x86_64-posix-seh-gcc-14.2.0-mingw-w64ucrt-12.0.0-r2.7z)  
+A simple Flappy Bird clone built with C++ and [SFML](https://www.sfml-dev.org/).
 
-Go to [SFML 3.0 Download Page](https://www.sfml-dev.org/download/sfml/3.0.0/) to download the specific versions
+## Features
 
-**Download the mingw compiler and put the `mingw64` folder at the root of the project.**
+- Basic Flappy Bird gameplay (WIP)
+- Uses SFML for graphics, audio, and input
+- Easy to build with CMake
+
+## Prerequisites
+
+- C++20 compatible compiler (e.g., GCC, Clang, MSVC)
+- [CMake](https://cmake.org/) 3.31 or newer
+- Git
+
+## Building and Running
+
+1. **Clone the repository:**
+   ```sh
+   git clone https://github.com/rahulc0dy/flappy-bird-sfml.git
+   cd flappy-bird-sfml
+   ```
+
+2. **Configure and build the project:**
+   ```sh
+   cmake -S . -B build
+   cmake --build build
+   ```
+
+3. **Run the game:**
+   ```sh
+   ./build/bin/flappy_bird
+   ```
+   On Windows, run:
+   ```
+   .\build\bin\flappy_bird.exe
+   ```
+
+## Assets
+
+All required assets (sprites, fonts, sounds) are included in the `assets` directory and are automatically copied to the build output.
+
+## Notes
+
+- The project uses SFML 3.0.1, which is fetched automatically by CMake.
+- Make sure your system supports OpenGL and audio playback.
+
+## License
+
+This project is for educational purposes.
