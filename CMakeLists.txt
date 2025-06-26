@@ -21,9 +21,11 @@ FetchContent_Declare(SFML
 )
 FetchContent_MakeAvailable(SFML)
 
+file(GLOB SRC_FILES "src/*.cpp")
+
 # Set the Executable target
 add_executable(flappy_bird
-        src/main.cpp
+        ${SRC_FILES}
 )
 
 # Include directories for the SFML library
