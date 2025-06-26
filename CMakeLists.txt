@@ -28,7 +28,13 @@ add_executable(flappy_bird
 
 # Set the C++ standard and link SFML libraries
 target_compile_features(flappy_bird PRIVATE cxx_std_20)
-target_link_libraries(flappy_bird PRIVATE SFML::Graphics)
+target_link_libraries(flappy_bird PRIVATE
+        SFML::Graphics
+        SFML::Window
+        SFML::System
+        SFML::Audio
+        SFML::Network
+)
 
 # Copy assets to the output directory
 file(COPY assets DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})
