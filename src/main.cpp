@@ -3,46 +3,54 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Audio.hpp>
 
-int main()
-{
+int main() {
     // Create the main window
-    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML window");
+    sf::RenderWindow window(sf::VideoMode({800, 600}), "SFML window",
+                            sf::Style::Close | sf::Style::Titlebar | sf::Style::Resize);
 
     // Load a sprite to display
     const sf::Texture texture("assets/sprites/Player/StyleBird1/Bird1-1.png");
-    const sf::Sprite sprite(texture);
+    const int frameWidth = 16;
+    const int frameHeight = 16;
+    const int frameCount = 4;
+    sf::Sprite sprite(texture);
+    sprite.setScale({2, 2});
+    sprite.setPosition(sf::Vector2f(window.getSize().x / 2, window.getSize().y / 2));
 
-    // Create a graphical text to display
     const sf::Font font("assets/fonts/MegamaxJonathanToo.ttf");
-    const sf::Text text(font, "Hello SFML", 50);
+    const sf::Text text(font, "Flappy", 50);
 
-    // // Load a music to play
     sf::Music music("assets/sounds/background-music.mp3");
 
-    // // Play the music
     music.play();
 
+    int currentFrame = 0;
+    sf::Clock frameClock;
+    const float frameDuration = 0.1f; // Duration of each frame in seconds
+
     // Start the game loop
-    while (window.isOpen())
-    {
+    while (window.isOpen()) {
         // Process events
-        while (const std::optional event = window.pollEvent())
-        {
+        while (const std::optional event = window.pollEvent()) {
             // Close window: exit
             if (event->is<sf::Event::Closed>())
                 window.close();
         }
 
-        // Clear screen
+        // Update properties
+        if (frameClock.getElapsedTime().asSeconds() > frameDuration) {
+            currentFrame = (currentFrame + 1) % frameCount;
+            sprite.setTextureRect(sf::IntRect(
+                    {currentFrame * frameWidth, 0},
+                    {frameWidth, frameHeight})
+            );
+            frameClock.restart();
+        }
+
+        // Draw
         window.clear();
-
-        // Draw the sprite
         window.draw(sprite);
-
-        // Draw the string
         window.draw(text);
-
-        // Update the window
         window.display();
     }
 

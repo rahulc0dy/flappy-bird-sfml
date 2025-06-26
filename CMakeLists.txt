@@ -26,6 +26,11 @@ add_executable(flappy_bird
         src/main.cpp
 )
 
+# Include directories for the SFML library
+target_include_directories(flappy_bird PRIVATE
+        include
+)
+
 # Set the C++ standard and link SFML libraries
 target_compile_features(flappy_bird PRIVATE cxx_std_20)
 target_link_libraries(flappy_bird PRIVATE
