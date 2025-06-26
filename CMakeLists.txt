@@ -24,6 +24,17 @@ FetchContent_MakeAvailable(SFML)
 # Set the Executable target
 add_executable(flappy_bird
         src/main.cpp
+        src/Game.cpp
+        src/AssetManager.cpp
+        src/GameStateManager.cpp
+        src/MenuState.cpp
+        src/PlayState.cpp
+        src/GameOverState.cpp
+        src/Player.cpp
+        src/Pipe.cpp
+        src/PipeManager.cpp
+        src/Background.cpp
+        src/ScoreManager.cpp
 )
 
 # Include directories for the SFML library
