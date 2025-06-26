@@ -10,7 +10,6 @@ MenuState::MenuState(AssetManager &assetManager)
     // Setup background
     m_background.setTexture(m_assetManager.getTexture("background"));
     m_background.setScale({2.0f, 2.0f});
-
     // Setup title text
     m_titleText.setFont(m_assetManager.getFont("main"));
     m_titleText.setString("Flappy Bird");
