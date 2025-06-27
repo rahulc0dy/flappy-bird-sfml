@@ -36,6 +36,8 @@ void PlayState::handleInput(const sf::Event &event, GameStateManager &stateManag
                 m_gameStarted = true;
             }
             m_player->jump();
+            m_jumpSound.stop();
+            m_jumpSound.play();
         }
     }
 }

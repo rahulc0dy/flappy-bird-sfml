@@ -1,10 +1,9 @@
 #include "Game.hpp"
 #include "MenuState.hpp"
-#include <iostream>
 
 Game::Game()
     : m_window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "Flappy Bird",
-               sf::Style::Close | sf::Style::Titlebar | sf::Style::Resize)
+               sf::Style::Close | sf::Style::Titlebar)
       , m_assetManager(std::make_unique<AssetManager>())
       , m_stateManager(std::make_unique<GameStateManager>(*m_assetManager)) {
     m_window.setFramerateLimit(120);
