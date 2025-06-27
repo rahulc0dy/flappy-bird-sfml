@@ -10,10 +10,11 @@ const float Player::START_Y = 300.0f;
 const float Player::GROUND_Y = 550.0f;
 
 Player::Player(AssetManager &assetManager)
-    : m_assetManager(assetManager)
-      , m_velocity(0.0f, 0.0f)
-      , m_currentFrame(0)
-      , m_animationTimer(0.0f) {
+    : m_assetManager(assetManager),
+      m_sprite(m_assetManager.getTexture("bird")),
+      m_velocity(0.0f, 0.0f),
+      m_currentFrame(0),
+      m_animationTimer(0.0f) {
     m_sprite.setTexture(m_assetManager.getTexture("bird"));
     m_sprite.setTextureRect(sf::IntRect({0, 0}, {FRAME_WIDTH, FRAME_HEIGHT}));
     m_sprite.setScale({2.0f, 2.0f});
@@ -87,5 +88,5 @@ void Player::updatePhysics(float deltaTime) {
 
     // Rotate sprite based on velocity
     float rotation = std::clamp(m_velocity.y * 0.1f, -30.0f, 90.0f);
-    m_sprite.setRotation(static_cast<sf::Angle>(rotation));
+    m_sprite.setRotation(sf::degrees(rotation));
 }

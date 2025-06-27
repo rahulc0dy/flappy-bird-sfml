@@ -37,7 +37,7 @@ void AssetManager::loadMusic(const std::string &name, const std::string &filenam
     m_music[name] = std::move(music);
 }
 
-const sf::Texture &AssetManager::getTexture(const std::string &name) const {
+const sf::Texture &AssetManager::getTexture(const std::string &name) {
     return *m_textures.at(name);
 }
 

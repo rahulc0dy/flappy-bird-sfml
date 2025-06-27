@@ -4,9 +4,14 @@
 #include <SFML/Window/Event.hpp>
 
 MenuState::MenuState(AssetManager &assetManager)
-    : m_assetManager(assetManager)
-      , m_playTextBlink(0.0f)
-      , m_showPlayText(true) {
+    : m_assetManager(assetManager),
+      m_backgroundMusic(&assetManager.getMusic("background")),
+      m_background(m_assetManager.getTexture("background")),
+      m_titleText(m_assetManager.getFont("main")),
+      m_playText(m_assetManager.getFont("main")),
+      m_instructionText(m_assetManager.getFont("main")),
+      m_playTextBlink(0.0f),
+      m_showPlayText(true) {
     // Setup background
     m_background.setTexture(m_assetManager.getTexture("background"));
     m_background.setScale({2.0f, 2.0f});
@@ -69,7 +74,7 @@ void MenuState::render(sf::RenderWindow &window) {
 }
 
 void MenuState::onEnter() {
-    m_backgroundMusic->setLoop(true);
+    m_backgroundMusic->setLooping(true);
     m_backgroundMusic->setVolume(50);
     m_backgroundMusic->play();
 }

@@ -5,11 +5,17 @@
 #include <SFML/Window/Event.hpp>
 
 GameOverState::GameOverState(AssetManager &assetManager, int score, int bestScore)
-    : m_assetManager(assetManager)
-      , m_score(score)
-      , m_bestScore(bestScore)
-      , m_restartTextBlink(0.0f)
-      , m_showRestartText(true) {
+    : m_assetManager(assetManager),
+      m_background(m_assetManager.getTexture("background")),
+      m_gameOverText(m_assetManager.getFont("main")),
+      m_scoreText(m_assetManager.getFont("main")),
+      m_bestScoreText(m_assetManager.getFont("main")),
+      m_restartText(m_assetManager.getFont("main")),
+      m_menuText(m_assetManager.getFont("main")),
+      m_score(score),
+      m_bestScore(bestScore),
+      m_restartTextBlink(0.0f),
+      m_showRestartText(true) {
     // Setup background
     m_background.setTexture(m_assetManager.getTexture("background"));
     m_background.setScale({2.0f, 2.0f});

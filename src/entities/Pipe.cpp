@@ -5,12 +5,20 @@ const float Pipe::PIPE_WIDTH = 52.0f;
 const float Pipe::PIPE_HEIGHT = 320.0f;
 
 Pipe::Pipe(AssetManager &assetManager, float x, float gapY, float gapSize)
-    : m_assetManager(assetManager)
-      , m_x(x)
-      , m_gapY(gapY)
-      , m_gapSize(gapSize) {
-    m_topPipe.setTexture(m_assetManager.getTexture("pipe"));
-    m_bottomPipe.setTexture(m_assetManager.getTexture("pipe"));
+    : m_assetManager(assetManager),
+      m_topPipe(m_assetManager.getTexture("pipe")),
+      m_bottomPipe(m_assetManager.getTexture("pipe")),
+      m_x(x),
+      m_gapY(gapY),
+      m_gapSize(gapSize) {
+    m_topPipe.setTextureRect(sf::IntRect(
+            {64, 0},
+            {32, 80})
+    );
+    m_bottomPipe.setTextureRect(sf::IntRect(
+            {64, 0},
+            {32, 80})
+    );
 
     // Scale pipes
     m_topPipe.setScale({2.0f, 2.0f});

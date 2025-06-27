@@ -3,9 +3,10 @@
 #include <iostream>
 
 ScoreManager::ScoreManager(AssetManager &assetManager)
-    : m_assetManager(assetManager)
-      , m_currentScore(0)
-      , m_bestScore(0) {
+    : m_assetManager(assetManager),
+      m_scoreText(m_assetManager.getFont("pixel")),
+      m_currentScore(0),
+      m_bestScore(0) {
     m_scoreText.setFont(m_assetManager.getFont("pixel"));
     m_scoreText.setCharacterSize(32);
     m_scoreText.setFillColor(sf::Color::White);

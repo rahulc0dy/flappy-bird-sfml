@@ -5,9 +5,13 @@ const float Background::GROUND_SPEED = 100.0f;
 const float Background::GROUND_Y = 550.0f;
 
 Background::Background(AssetManager &assetManager)
-    : m_assetManager(assetManager)
-      , m_backgroundOffset(0.0f)
-      , m_groundOffset(0.0f) {
+    : m_assetManager(assetManager),
+      m_background1(m_assetManager.getTexture("background")),
+      m_background2(m_assetManager.getTexture("background")),
+      m_ground1(m_assetManager.getTexture("ground")),
+      m_ground2(m_assetManager.getTexture("ground")),
+      m_backgroundOffset(0.0f),
+      m_groundOffset(0.0f) {
     // Setup background sprites
     m_background1.setTexture(m_assetManager.getTexture("background"));
     m_background2.setTexture(m_assetManager.getTexture("background"));
@@ -20,6 +24,9 @@ Background::Background(AssetManager &assetManager)
 
     // Setup ground sprites
     m_ground1.setTexture(m_assetManager.getTexture("ground"));
+    m_ground1.setTextureRect(sf::IntRect(
+        {0, 0}, {1, 1}
+    ));
     m_ground2.setTexture(m_assetManager.getTexture("ground"));
 
     m_ground1.setScale({2.0f, 2.0f});

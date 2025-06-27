@@ -2,10 +2,15 @@
 #include "GameOverState.hpp"
 #include "GameStateManager.hpp"
 #include <SFML/Window/Event.hpp>
+#include "Player.hpp"
 
 PlayState::PlayState(AssetManager &assetManager)
-    : m_assetManager(assetManager)
-      , m_gameStarted(false) {
+    : m_assetManager(assetManager),
+      m_jumpSound(assetManager.getSoundBuffer("jump")),
+      m_scoreSound(assetManager.getSoundBuffer("score")),
+      m_hitSound(assetManager.getSoundBuffer("hit")),
+      m_gameStarted(false),
+      m_startText(m_assetManager.getFont("pixel")) {
     m_player = std::make_unique<Player>(m_assetManager);
     m_pipeManager = std::make_unique<PipeManager>(m_assetManager);
     m_background = std::make_unique<Background>(m_assetManager);

@@ -7,9 +7,10 @@ const float PipeManager::MIN_GAP_Y = 150.0f;
 const float PipeManager::MAX_GAP_Y = 400.0f;
 
 PipeManager::PipeManager(AssetManager &assetManager)
-    : m_assetManager(assetManager)
-      , m_spawnTimer(0.0f)
-      , m_lastScoredPipe(-1) {
+    : m_assetManager(assetManager),
+      m_spawnTimer(0.0f),
+      m_lastScoredPipe(-1) {
+
 }
 
 void PipeManager::update(float deltaTime) {
