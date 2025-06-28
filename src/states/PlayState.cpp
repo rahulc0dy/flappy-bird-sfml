@@ -55,6 +55,7 @@ void PlayState::update(float deltaTime, GameStateManager &stateManager) {
     int newScore = m_pipeManager->checkScoring(m_player->getPosition().x);
     if (newScore > 0) {
         m_scoreManager->addScore(newScore);
+        m_scoreSound.play();
     }
 
     checkCollisions(stateManager);
