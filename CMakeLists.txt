@@ -21,25 +21,28 @@ FetchContent_Declare(SFML
 )
 FetchContent_MakeAvailable(SFML)
 
+file(GLOB SRC_FILES "src/*.cpp")
+file(GLOB ENTITIES "src/entities/*.cpp")
+file(GLOB STATES "src/states/*.cpp")
+
 # Set the Executable target
 add_executable(flappy_bird
-        src/main.cpp
-        src/Game.cpp
-        src/AssetManager.cpp
-        src/GameStateManager.cpp
-        src/MenuState.cpp
-        src/PlayState.cpp
-        src/GameOverState.cpp
-        src/Player.cpp
-        src/Pipe.cpp
-        src/PipeManager.cpp
-        src/Background.cpp
-        src/ScoreManager.cpp
+        ${SRC_FILES}
+        ${ENTITIES}
+        ${STATES}
+)
+
+# copy assets to the output directory after building
+add_custom_command(TARGET flappy_bird POST_BUILD
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+        ${CMAKE_SOURCE_DIR}/assets $<TARGET_FILE_DIR:flappy_bird>/assets
 )
 
 # Include directories for the SFML library
 target_include_directories(flappy_bird PRIVATE
         include
+        include/entities
+        include/states
 )
 
 # Set the C++ standard and link SFML libraries
@@ -51,6 +54,3 @@ target_link_libraries(flappy_bird PRIVATE
         SFML::Audio
         SFML::Network
 )
-
-# Copy assets to the output directory
-file(COPY assets DESTINATION ${CMAKE_RUNTIME_OUTPUT_DIRECTORY})

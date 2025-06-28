@@ -2,22 +2,22 @@
 #include <fstream>
 #include <iostream>
 
-ScoreManager::ScoreManager(AssetManager& assetManager) 
-    : m_assetManager(assetManager)
-    , m_currentScore(0)
-    , m_bestScore(0) {
-    
+ScoreManager::ScoreManager(AssetManager &assetManager)
+    : m_assetManager(assetManager),
+      m_scoreText(m_assetManager.getFont("pixel")),
+      m_currentScore(0),
+      m_bestScore(0) {
     m_scoreText.setFont(m_assetManager.getFont("pixel"));
     m_scoreText.setCharacterSize(32);
     m_scoreText.setFillColor(sf::Color::White);
     m_scoreText.setOutlineColor(sf::Color::Black);
     m_scoreText.setOutlineThickness(2);
-    
+
     loadBestScore();
     updateScoreText();
 }
 
-void ScoreManager::render(sf::RenderWindow& window) {
+void ScoreManager::render(sf::RenderWindow &window) {
     window.draw(m_scoreText);
 }
 
@@ -38,7 +38,7 @@ void ScoreManager::reset() {
 void ScoreManager::updateScoreText() {
     m_scoreText.setString(std::to_string(m_currentScore));
     auto bounds = m_scoreText.getLocalBounds();
-    m_scoreText.setPosition(400 - bounds.width / 2, 50);
+    m_scoreText.setPosition({400 - bounds.size.x / 2, 50});
 }
 
 void ScoreManager::saveBestScore() {
