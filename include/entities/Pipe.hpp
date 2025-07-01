@@ -4,11 +4,11 @@
 
 class Pipe {
 public:
-    Pipe(AssetManager& assetManager, float x, float gapY, float gapSize);
+    Pipe(sf::RenderWindow& window, AssetManager& assetManager, float x, float gapY, float gapSize);
     ~Pipe() = default;
 
     void update(float deltaTime);
-    void render(sf::RenderWindow& window);
+    void render();
 
     sf::FloatRect getTopBounds() const;
     sf::FloatRect getBottomBounds() const;
@@ -17,6 +17,7 @@ public:
     bool hasPassedPlayer(float playerX) const;
 
 private:
+    sf::RenderWindow& m_window;
     AssetManager& m_assetManager;
     sf::Sprite m_topPipe;
     sf::Sprite m_bottomPipe;
@@ -25,7 +26,9 @@ private:
     float m_gapY;
     float m_gapSize;
     
+    // Dynamic dimensions based on window size
+    float m_pipeWidth;
+    float m_pipeHeight;
+    
     static const float PIPE_SPEED;
-    static const float PIPE_WIDTH;
-    static const float PIPE_HEIGHT;
 };

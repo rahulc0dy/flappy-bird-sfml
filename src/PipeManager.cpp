@@ -3,14 +3,20 @@
 
 const float PipeManager::SPAWN_INTERVAL = 2.0f;
 const float PipeManager::GAP_SIZE = 120.0f;
-const float PipeManager::MIN_GAP_Y = 150.0f;
-const float PipeManager::MAX_GAP_Y = 400.0f;
 
-PipeManager::PipeManager(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+PipeManager::PipeManager(sf::RenderWindow& window, AssetManager &assetManager)
+    : m_window(window),
+      m_assetManager(assetManager),
       m_spawnTimer(0.0f),
       m_lastScoredPipe(-1) {
-
+    
+    // Calculate dynamic values based on window size
+    sf::Vector2u windowSize = m_window.getSize();
+    float windowHeight = static_cast<float>(windowSize.y);
+    
+    // Set gap Y limits based on window height
+    m_minGapY = windowHeight * 0.25f; // 25% from top
+    m_maxGapY = windowHeight * 0.75f; // 75% from top
 }
 
 void PipeManager::update(float deltaTime) {
@@ -36,9 +42,9 @@ void PipeManager::update(float deltaTime) {
     }
 }
 
-void PipeManager::render(sf::RenderWindow &window) {
+void PipeManager::render() {
     for (const auto &pipe: m_pipes) {
-        pipe->render(window);
+        pipe->render();
     }
 }
 
@@ -74,8 +80,11 @@ int PipeManager::checkScoring(float playerX) {
 void PipeManager::spawnPipe() {
     static std::random_device rd;
     static std::mt19937 gen(rd());
-    std::uniform_real_distribution<float> dis(MIN_GAP_Y, MAX_GAP_Y);
+    std::uniform_real_distribution<float> dis(m_minGapY, m_maxGapY);
 
     float gapY = dis(gen);
-    m_pipes.push_back(std::make_unique<Pipe>(m_assetManager, 850.0f, gapY, GAP_SIZE));
+    sf::Vector2u windowSize = m_window.getSize();
+    float spawnX = static_cast<float>(windowSize.x) + 50.0f; // Spawn just off-screen
+    
+    m_pipes.push_back(std::make_unique<Pipe>(m_window, m_assetManager, spawnX, gapY, GAP_SIZE));
 }

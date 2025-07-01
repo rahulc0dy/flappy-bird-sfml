@@ -5,11 +5,11 @@
 
 class Player {
 public:
-    Player(AssetManager& assetManager);
+    Player(sf::RenderWindow& window, AssetManager& assetManager);
     ~Player() = default;
 
     void update(float deltaTime);
-    void render(sf::RenderWindow& window);
+    void render();
     void jump();
     void reset();
 
@@ -21,6 +21,7 @@ private:
     void updateAnimation(float deltaTime);
     void updatePhysics(float deltaTime);
 
+    sf::RenderWindow& m_window;
     AssetManager& m_assetManager;
     sf::Sprite m_sprite;
     sf::Vector2f m_velocity;
@@ -38,8 +39,8 @@ private:
     static const float JUMP_FORCE;
     static const float MAX_FALL_SPEED;
     
-    // Position
-    static const float START_X;
-    static const float START_Y;
-    static const float GROUND_Y;
+    // Dynamic position values
+    float m_startX;
+    float m_startY;
+    float m_groundY;
 };

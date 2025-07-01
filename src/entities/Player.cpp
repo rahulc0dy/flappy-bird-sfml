@@ -5,19 +5,31 @@ const float Player::ANIMATION_SPEED = 0.1f;
 const float Player::GRAVITY = 980.0f;
 const float Player::JUMP_FORCE = -350.0f;
 const float Player::MAX_FALL_SPEED = 500.0f;
-const float Player::START_X = 100.0f;
-const float Player::START_Y = 300.0f;
-const float Player::GROUND_Y = 550.0f;
 
-Player::Player(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+Player::Player(sf::RenderWindow& window, AssetManager &assetManager)
+    : m_window(window),
+      m_assetManager(assetManager),
       m_sprite(m_assetManager.getTexture("bird")),
       m_velocity(0.0f, 0.0f),
       m_currentFrame(0),
       m_animationTimer(0.0f) {
+    
+    // Get window dimensions for dynamic positioning
+    sf::Vector2u windowSize = m_window.getSize();
+    float windowWidth = static_cast<float>(windowSize.x);
+    float windowHeight = static_cast<float>(windowSize.y);
+    
+    // Calculate dynamic positions based on window size
+    m_startX = windowWidth * 0.125f; // 12.5% from left
+    m_startY = windowHeight * 0.5f;  // Center vertically
+    m_groundY = windowHeight * 0.9f; // 90% down from top
+    
     m_sprite.setTexture(m_assetManager.getTexture("bird"));
     m_sprite.setTextureRect(sf::IntRect({0, 0}, {FRAME_WIDTH, FRAME_HEIGHT}));
-    m_sprite.setScale({2.0f, 2.0f});
+    
+    // Calculate scale based on window size
+    float scale = std::min(windowWidth / 400.0f, windowHeight / 300.0f);
+    m_sprite.setScale({scale, scale});
     m_sprite.setOrigin({FRAME_WIDTH / 2.0f, FRAME_HEIGHT / 2.0f});
 
     reset();
@@ -28,8 +40,8 @@ void Player::update(float deltaTime) {
     updatePhysics(deltaTime);
 }
 
-void Player::render(sf::RenderWindow &window) {
-    window.draw(m_sprite);
+void Player::render() {
+    m_window.draw(m_sprite);
 }
 
 void Player::jump() {
@@ -37,7 +49,7 @@ void Player::jump() {
 }
 
 void Player::reset() {
-    m_sprite.setPosition({START_X, START_Y});
+    m_sprite.setPosition({m_startX, m_startY});
     m_velocity = sf::Vector2f(0.0f, 0.0f);
     m_currentFrame = 0;
     m_animationTimer = 0.0f;
@@ -48,7 +60,7 @@ sf::FloatRect Player::getBounds() const {
 }
 
 bool Player::isOnGround() const {
-    return m_sprite.getPosition().y >= GROUND_Y;
+    return m_sprite.getPosition().y >= m_groundY;
 }
 
 void Player::updateAnimation(float deltaTime) {
@@ -73,8 +85,8 @@ void Player::updatePhysics(float deltaTime) {
     position.y += m_velocity.y * deltaTime;
 
     // Clamp to ground
-    if (position.y >= GROUND_Y) {
-        position.y = GROUND_Y;
+    if (position.y >= m_groundY) {
+        position.y = m_groundY;
         m_velocity.y = 0.0f;
     }
 

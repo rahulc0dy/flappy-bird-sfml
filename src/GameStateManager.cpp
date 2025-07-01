@@ -1,7 +1,7 @@
 #include "GameStateManager.hpp"
 
-GameStateManager::GameStateManager(AssetManager& assetManager) 
-    : m_assetManager(assetManager) {
+GameStateManager::GameStateManager(sf::RenderWindow& window, AssetManager& assetManager) 
+    : m_window(window), m_assetManager(assetManager) {
 }
 
 void GameStateManager::pushState(std::unique_ptr<GameState> state) {
@@ -43,8 +43,8 @@ void GameStateManager::update(float deltaTime) {
     }
 }
 
-void GameStateManager::render(sf::RenderWindow& window) {
+void GameStateManager::render() {
     if (!m_states.empty()) {
-        m_states.top()->render(window);
+        m_states.top()->render();
     }
 }
