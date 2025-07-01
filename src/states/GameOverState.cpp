@@ -4,8 +4,9 @@
 #include "GameStateManager.hpp"
 #include <SFML/Window/Event.hpp>
 
-GameOverState::GameOverState(AssetManager &assetManager, int score, int bestScore)
-    : m_assetManager(assetManager),
+GameOverState::GameOverState(sf::RenderWindow& window, AssetManager &assetManager, int score, int bestScore)
+    : GameState(window),
+      m_assetManager(assetManager),
       m_background(m_assetManager.getTexture("background")),
       m_gameOverText(m_assetManager.getFont("main")),
       m_scoreText(m_assetManager.getFont("main")),
@@ -73,9 +74,9 @@ void GameOverState::handleInput(const sf::Event &event, GameStateManager &stateM
     if (event.is<sf::Event::KeyPressed>()) {
         const auto &keyEvent = event.getIf<sf::Event::KeyPressed>();
         if (keyEvent->code == sf::Keyboard::Key::Space) {
-            stateManager.changeState(std::make_unique<PlayState>(m_assetManager));
+            stateManager.changeState(std::make_unique<PlayState>(m_window, m_assetManager));
         } else if (keyEvent->code == sf::Keyboard::Key::Escape) {
-            stateManager.changeState(std::make_unique<MenuState>(m_assetManager));
+            stateManager.changeState(std::make_unique<MenuState>(m_window, m_assetManager));
         }
     }
 }
@@ -88,15 +89,15 @@ void GameOverState::update(float deltaTime, GameStateManager &stateManager) {
     }
 }
 
-void GameOverState::render(sf::RenderWindow &window) {
-    window.draw(m_background);
-    window.draw(m_gameOverText);
-    window.draw(m_scoreText);
-    window.draw(m_bestScoreText);
+void GameOverState::render() {
+    m_window.draw(m_background);
+    m_window.draw(m_gameOverText);
+    m_window.draw(m_scoreText);
+    m_window.draw(m_bestScoreText);
     if (m_showRestartText) {
-        window.draw(m_restartText);
+        m_window.draw(m_restartText);
     }
-    window.draw(m_menuText);
+    m_window.draw(m_menuText);
 }
 
 void GameOverState::onEnter() {

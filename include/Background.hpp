@@ -4,14 +4,15 @@
 
 class Background {
 public:
-    Background(AssetManager& assetManager);
+    Background(sf::RenderWindow& window, AssetManager& assetManager);
     ~Background() = default;
 
     void update(float deltaTime);
-    void render(sf::RenderWindow& window);
+    void render();
     void reset();
 
 private:
+    sf::RenderWindow& m_window;
     AssetManager& m_assetManager;
     sf::Sprite m_background1;
     sf::Sprite m_background2;

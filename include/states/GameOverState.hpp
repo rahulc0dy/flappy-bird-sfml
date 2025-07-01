@@ -6,7 +6,7 @@
 
 class GameOverState : public GameState {
 public:
-    GameOverState(AssetManager &assetManager, int score, int bestScore);
+    GameOverState(sf::RenderWindow& window, AssetManager &assetManager, int score, int bestScore);
 
     ~GameOverState() = default;
 
@@ -14,7 +14,7 @@ public:
 
     void update(float deltaTime, GameStateManager &stateManager) override;
 
-    void render(sf::RenderWindow &window) override;
+    void render() override;
 
     void onEnter() override;
 

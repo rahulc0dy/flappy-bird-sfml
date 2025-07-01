@@ -2,8 +2,9 @@
 #include <fstream>
 #include <iostream>
 
-ScoreManager::ScoreManager(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+ScoreManager::ScoreManager(sf::RenderWindow& window, AssetManager &assetManager)
+    : m_window(window),
+      m_assetManager(assetManager),
       m_scoreText(m_assetManager.getFont("pixel")),
       m_currentScore(0),
       m_bestScore(0) {
@@ -17,8 +18,8 @@ ScoreManager::ScoreManager(AssetManager &assetManager)
     updateScoreText();
 }
 
-void ScoreManager::render(sf::RenderWindow &window) {
-    window.draw(m_scoreText);
+void ScoreManager::render() {
+    m_window.draw(m_scoreText);
 }
 
 void ScoreManager::addScore(int points) {

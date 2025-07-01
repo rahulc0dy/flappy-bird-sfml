@@ -6,7 +6,7 @@
 
 class MenuState : public GameState {
 public:
-    MenuState(AssetManager &assetManager);
+    MenuState(sf::RenderWindow& window, AssetManager &assetManager);
 
     ~MenuState() = default;
 
@@ -14,7 +14,7 @@ public:
 
     void update(float deltaTime, GameStateManager &stateManager) override;
 
-    void render(sf::RenderWindow &window) override;
+    void render() override;
 
     void onEnter() override;
 

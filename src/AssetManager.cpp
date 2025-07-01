@@ -1,6 +1,9 @@
 #include "AssetManager.hpp"
 #include <iostream>
 
+AssetManager::AssetManager(sf::RenderWindow& window) : m_window(window) {
+}
+
 void AssetManager::loadTexture(const std::string &name, const std::string &filename) {
     auto texture = std::make_unique<sf::Texture>();
     if (!texture->loadFromFile(filename)) {

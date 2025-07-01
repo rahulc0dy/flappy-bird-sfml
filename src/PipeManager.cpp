@@ -6,8 +6,9 @@ const float PipeManager::GAP_SIZE = 120.0f;
 const float PipeManager::MIN_GAP_Y = 150.0f;
 const float PipeManager::MAX_GAP_Y = 400.0f;
 
-PipeManager::PipeManager(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+PipeManager::PipeManager(sf::RenderWindow& window, AssetManager &assetManager)
+    : m_window(window),
+      m_assetManager(assetManager),
       m_spawnTimer(0.0f),
       m_lastScoredPipe(-1) {
 
@@ -36,9 +37,9 @@ void PipeManager::update(float deltaTime) {
     }
 }
 
-void PipeManager::render(sf::RenderWindow &window) {
+void PipeManager::render() {
     for (const auto &pipe: m_pipes) {
-        pipe->render(window);
+        pipe->render();
     }
 }
 
@@ -77,5 +78,5 @@ void PipeManager::spawnPipe() {
     std::uniform_real_distribution<float> dis(MIN_GAP_Y, MAX_GAP_Y);
 
     float gapY = dis(gen);
-    m_pipes.push_back(std::make_unique<Pipe>(m_assetManager, 850.0f, gapY, GAP_SIZE));
+    m_pipes.push_back(std::make_unique<Pipe>(m_window, m_assetManager, 850.0f, gapY, GAP_SIZE));
 }

@@ -7,8 +7,9 @@ const float Background::BACKGROUND_SPEED = 50.0f;
 const float Background::GROUND_SPEED = 100.0f;
 const float Background::GROUND_Y = 550.0f;
 
-Background::Background(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+Background::Background(sf::RenderWindow& window, AssetManager &assetManager)
+    : m_window(window),
+      m_assetManager(assetManager),
       m_background1(m_assetManager.getTexture("background")),
       m_background2(m_assetManager.getTexture("background")),
       m_ground1(m_assetManager.getTexture("ground")),
@@ -60,11 +61,11 @@ void Background::update(float deltaTime) {
     m_ground2.setPosition({groundWidth - m_groundOffset, GROUND_Y});
 }
 
-void Background::render(sf::RenderWindow &window) {
-    window.draw(m_background1);
-    window.draw(m_background2);
-    window.draw(m_ground1);
-    window.draw(m_ground2);
+void Background::render() {
+    m_window.draw(m_background1);
+    m_window.draw(m_background2);
+    m_window.draw(m_ground1);
+    m_window.draw(m_ground2);
 }
 
 void Background::reset() {

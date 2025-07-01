@@ -4,8 +4,8 @@
 Game::Game()
     : m_window(sf::VideoMode({WINDOW_WIDTH, WINDOW_HEIGHT}), "Flappy Bird",
                sf::Style::Close | sf::Style::Titlebar)
-      , m_assetManager(std::make_unique<AssetManager>())
-      , m_stateManager(std::make_unique<GameStateManager>(*m_assetManager)) {
+      , m_assetManager(std::make_unique<AssetManager>(m_window))
+      , m_stateManager(std::make_unique<GameStateManager>(m_window, *m_assetManager)) {
     m_window.setFramerateLimit(120);
 
     // Load all assets
@@ -23,7 +23,7 @@ Game::Game()
     m_assetManager->loadSound("score", "assets/sounds/score-sound.wav");
 
     // Start with menu state
-    m_stateManager->pushState(std::make_unique<MenuState>(*m_assetManager));
+    m_stateManager->pushState(std::make_unique<MenuState>(m_window, *m_assetManager));
 }
 
 void Game::run() {
@@ -52,6 +52,6 @@ void Game::update(float deltaTime) {
 
 void Game::render() {
     m_window.clear(sf::Color::Cyan);
-    m_stateManager->render(m_window);
+    m_stateManager->render();
     m_window.display();
 }

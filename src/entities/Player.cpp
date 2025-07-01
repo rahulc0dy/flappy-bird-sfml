@@ -9,8 +9,9 @@ const float Player::START_X = 100.0f;
 const float Player::START_Y = 300.0f;
 const float Player::GROUND_Y = 550.0f;
 
-Player::Player(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+Player::Player(sf::RenderWindow& window, AssetManager &assetManager)
+    : m_window(window),
+      m_assetManager(assetManager),
       m_sprite(m_assetManager.getTexture("bird")),
       m_velocity(0.0f, 0.0f),
       m_currentFrame(0),
@@ -28,8 +29,8 @@ void Player::update(float deltaTime) {
     updatePhysics(deltaTime);
 }
 
-void Player::render(sf::RenderWindow &window) {
-    window.draw(m_sprite);
+void Player::render() {
+    m_window.draw(m_sprite);
 }
 
 void Player::jump() {

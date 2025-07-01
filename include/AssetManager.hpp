@@ -7,7 +7,7 @@
 
 class AssetManager {
 public:
-    AssetManager() = default;
+    AssetManager(sf::RenderWindow& window);
 
     ~AssetManager() = default;
 
@@ -27,7 +27,10 @@ public:
 
     sf::Music &getMusic(const std::string &name);
 
+    sf::RenderWindow& getWindow() { return m_window; }
+
 private:
+    sf::RenderWindow& m_window;
     std::unordered_map<std::string, std::unique_ptr<sf::Texture> > m_textures;
     std::unordered_map<std::string, std::unique_ptr<sf::Font> > m_fonts;
     std::unordered_map<std::string, std::unique_ptr<sf::SoundBuffer> > m_soundBuffers;

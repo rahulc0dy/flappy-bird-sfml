@@ -5,11 +5,11 @@
 
 class Player {
 public:
-    Player(AssetManager& assetManager);
+    Player(sf::RenderWindow& window, AssetManager& assetManager);
     ~Player() = default;
 
     void update(float deltaTime);
-    void render(sf::RenderWindow& window);
+    void render();
     void jump();
     void reset();
 
@@ -21,6 +21,7 @@ private:
     void updateAnimation(float deltaTime);
     void updatePhysics(float deltaTime);
 
+    sf::RenderWindow& m_window;
     AssetManager& m_assetManager;
     sf::Sprite m_sprite;
     sf::Vector2f m_velocity;

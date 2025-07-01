@@ -3,8 +3,9 @@
 #include "GameStateManager.hpp"
 #include <SFML/Window/Event.hpp>
 
-MenuState::MenuState(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+MenuState::MenuState(sf::RenderWindow& window, AssetManager &assetManager)
+    : GameState(window),
+      m_assetManager(assetManager),
       m_backgroundMusic(&assetManager.getMusic("background")),
       m_background(m_assetManager.getTexture("background")),
       m_titleText(m_assetManager.getFont("main")),
@@ -51,7 +52,7 @@ void MenuState::handleInput(const sf::Event &event, GameStateManager &stateManag
     if (event.is<sf::Event::KeyPressed>()) {
         const auto &keyEvent = event.getIf<sf::Event::KeyPressed>();
         if (keyEvent->code == sf::Keyboard::Key::Space) {
-            stateManager.changeState(std::make_unique<PlayState>(m_assetManager));
+            stateManager.changeState(std::make_unique<PlayState>(m_window, m_assetManager));
         }
     }
 }
@@ -64,13 +65,13 @@ void MenuState::update(float deltaTime, GameStateManager &stateManager) {
     }
 }
 
-void MenuState::render(sf::RenderWindow &window) {
-    window.draw(m_background);
-    window.draw(m_titleText);
+void MenuState::render() {
+    m_window.draw(m_background);
+    m_window.draw(m_titleText);
     if (m_showPlayText) {
-        window.draw(m_playText);
+        m_window.draw(m_playText);
     }
-    window.draw(m_instructionText);
+    m_window.draw(m_instructionText);
 }
 
 void MenuState::onEnter() {

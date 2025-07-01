@@ -9,12 +9,12 @@
 
 class PlayState : public GameState {
 public:
-    PlayState(AssetManager& assetManager);
+    PlayState(sf::RenderWindow& window, AssetManager& assetManager);
     ~PlayState() = default;
 
     void handleInput(const sf::Event& event, GameStateManager& stateManager) override;
     void update(float deltaTime, GameStateManager& stateManager) override;
-    void render(sf::RenderWindow& window) override;
+    void render() override;
     void onEnter() override;
 
 private:

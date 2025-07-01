@@ -4,10 +4,10 @@
 
 class ScoreManager {
 public:
-    ScoreManager(AssetManager& assetManager);
+    ScoreManager(sf::RenderWindow& window, AssetManager& assetManager);
     ~ScoreManager() = default;
 
-    void render(sf::RenderWindow& window);
+    void render();
     void addScore(int points = 1);
     void reset();
     
@@ -19,6 +19,7 @@ private:
     void saveBestScore();
     void loadBestScore();
 
+    sf::RenderWindow& m_window;
     AssetManager& m_assetManager;
     sf::Text m_scoreText;
     

@@ -4,17 +4,18 @@
 #include <SFML/Window/Event.hpp>
 #include "Player.hpp"
 
-PlayState::PlayState(AssetManager &assetManager)
-    : m_assetManager(assetManager),
+PlayState::PlayState(sf::RenderWindow& window, AssetManager &assetManager)
+    : GameState(window),
+      m_assetManager(assetManager),
       m_jumpSound(assetManager.getSoundBuffer("jump")),
       m_scoreSound(assetManager.getSoundBuffer("score")),
       m_hitSound(assetManager.getSoundBuffer("hit")),
       m_gameStarted(false),
       m_startText(m_assetManager.getFont("pixel")) {
-    m_player = std::make_unique<Player>(m_assetManager);
-    m_pipeManager = std::make_unique<PipeManager>(m_assetManager);
-    m_background = std::make_unique<Background>(m_assetManager);
-    m_scoreManager = std::make_unique<ScoreManager>(m_assetManager);
+    m_player = std::make_unique<Player>(m_window, m_assetManager);
+    m_pipeManager = std::make_unique<PipeManager>(m_window, m_assetManager);
+    m_background = std::make_unique<Background>(m_window, m_assetManager);
+    m_scoreManager = std::make_unique<ScoreManager>(m_window, m_assetManager);
 
     // Setup start text
     m_startText.setFont(m_assetManager.getFont("pixel"));
@@ -61,14 +62,14 @@ void PlayState::update(float deltaTime, GameStateManager &stateManager) {
     checkCollisions(stateManager);
 }
 
-void PlayState::render(sf::RenderWindow &window) {
-    m_background->render(window);
-    m_pipeManager->render(window);
-    m_player->render(window);
-    m_scoreManager->render(window);
+void PlayState::render() {
+    m_background->render();
+    m_pipeManager->render();
+    m_player->render();
+    m_scoreManager->render();
 
     if (!m_gameStarted) {
-        window.draw(m_startText);
+        m_window.draw(m_startText);
     }
 }
 
@@ -80,6 +81,7 @@ void PlayState::checkCollisions(GameStateManager &stateManager) {
     // Check ground collision
     if (m_player->isOnGround()) {
         stateManager.changeState(std::make_unique<GameOverState>(
+            m_window,
             m_assetManager,
             m_scoreManager->getCurrentScore(),
             m_scoreManager->getBestScore()
@@ -90,6 +92,7 @@ void PlayState::checkCollisions(GameStateManager &stateManager) {
     // Check pipe collision
     if (m_pipeManager->checkCollision(m_player->getBounds())) {
         stateManager.changeState(std::make_unique<GameOverState>(
+            m_window,
             m_assetManager,
             m_scoreManager->getCurrentScore(),
             m_scoreManager->getBestScore()

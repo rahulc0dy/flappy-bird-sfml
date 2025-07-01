@@ -6,11 +6,11 @@
 
 class PipeManager {
 public:
-    PipeManager(AssetManager& assetManager);
+    PipeManager(sf::RenderWindow& window, AssetManager& assetManager);
     ~PipeManager() = default;
 
     void update(float deltaTime);
-    void render(sf::RenderWindow& window);
+    void render();
     void reset();
 
     bool checkCollision(const sf::FloatRect& playerBounds) const;
@@ -19,6 +19,7 @@ public:
 private:
     void spawnPipe();
 
+    sf::RenderWindow& m_window;
     AssetManager& m_assetManager;
     std::vector<std::unique_ptr<Pipe>> m_pipes;
     
