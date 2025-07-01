@@ -39,8 +39,8 @@ private:
     static const float JUMP_FORCE;
     static const float MAX_FALL_SPEED;
     
-    // Position
-    static const float START_X;
-    static const float START_Y;
-    static const float GROUND_Y;
+    // Dynamic position values
+    float m_startX;
+    float m_startY;
+    float m_groundY;
 };

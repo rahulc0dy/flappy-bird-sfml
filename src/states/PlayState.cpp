@@ -17,16 +17,29 @@ PlayState::PlayState(sf::RenderWindow& window, AssetManager &assetManager)
     m_background = std::make_unique<Background>(m_window, m_assetManager);
     m_scoreManager = std::make_unique<ScoreManager>(m_window, m_assetManager);
 
-    // Setup start text
+    // Setup start text with dynamic sizing
+    sf::Vector2u windowSize = m_window.getSize();
+    float windowWidth = static_cast<float>(windowSize.x);
+    float windowHeight = static_cast<float>(windowSize.y);
+    
     m_startText.setFont(m_assetManager.getFont("pixel"));
+    
+    // Calculate font size based on window size
+    unsigned int fontSize = static_cast<unsigned int>(windowHeight * 0.04f); // 4% of window height
+    m_startText.setCharacterSize(fontSize);
+    
     m_startText.setString("Press SPACE to start");
-    m_startText.setCharacterSize(24);
     m_startText.setFillColor(sf::Color::White);
     m_startText.setOutlineColor(sf::Color::Black);
-    m_startText.setOutlineThickness(2);
+    
+    float outlineThickness = windowHeight * 0.003f; // 0.3% of window height
+    m_startText.setOutlineThickness(outlineThickness);
 
+    // Center the text
     auto bounds = m_startText.getLocalBounds();
-    m_startText.setPosition({400 - bounds.size.x / 2, 300});
+    float x = (windowWidth - bounds.size.x) / 2.0f;
+    float y = windowHeight * 0.5f; // Center vertically
+    m_startText.setPosition({x, y});
 }
 
 void PlayState::handleInput(const sf::Event &event, GameStateManager &stateManager) {
@@ -80,6 +93,7 @@ void PlayState::onEnter() {
 void PlayState::checkCollisions(GameStateManager &stateManager) {
     // Check ground collision
     if (m_player->isOnGround()) {
+        m_hitSound.play();
         stateManager.changeState(std::make_unique<GameOverState>(
             m_window,
             m_assetManager,
@@ -91,6 +105,7 @@ void PlayState::checkCollisions(GameStateManager &stateManager) {
 
     // Check pipe collision
     if (m_pipeManager->checkCollision(m_player->getBounds())) {
+        m_hitSound.play();
         stateManager.changeState(std::make_unique<GameOverState>(
             m_window,
             m_assetManager,

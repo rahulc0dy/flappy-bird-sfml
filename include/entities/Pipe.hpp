@@ -26,7 +26,9 @@ private:
     float m_gapY;
     float m_gapSize;
     
+    // Dynamic dimensions based on window size
+    float m_pipeWidth;
+    float m_pipeHeight;
+    
     static const float PIPE_SPEED;
-    static const float PIPE_WIDTH;
-    static const float PIPE_HEIGHT;
 };

@@ -26,8 +26,10 @@ private:
     float m_spawnTimer;
     int m_lastScoredPipe;
     
+    // Dynamic values based on window size
+    float m_minGapY;
+    float m_maxGapY;
+    
     static const float SPAWN_INTERVAL;
     static const float GAP_SIZE;
-    static const float MIN_GAP_Y;
-    static const float MAX_GAP_Y;
 };

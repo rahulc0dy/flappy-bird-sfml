@@ -8,11 +8,24 @@ ScoreManager::ScoreManager(sf::RenderWindow& window, AssetManager &assetManager)
       m_scoreText(m_assetManager.getFont("pixel")),
       m_currentScore(0),
       m_bestScore(0) {
+    
+    // Get window dimensions for dynamic sizing
+    sf::Vector2u windowSize = m_window.getSize();
+    float windowWidth = static_cast<float>(windowSize.x);
+    float windowHeight = static_cast<float>(windowSize.y);
+    
     m_scoreText.setFont(m_assetManager.getFont("pixel"));
-    m_scoreText.setCharacterSize(32);
+    
+    // Calculate font size based on window size
+    unsigned int fontSize = static_cast<unsigned int>(windowHeight * 0.053f); // 5.3% of window height
+    m_scoreText.setCharacterSize(fontSize);
+    
     m_scoreText.setFillColor(sf::Color::White);
     m_scoreText.setOutlineColor(sf::Color::Black);
-    m_scoreText.setOutlineThickness(2);
+    
+    // Calculate outline thickness based on window size
+    float outlineThickness = windowHeight * 0.003f; // 0.3% of window height
+    m_scoreText.setOutlineThickness(outlineThickness);
 
     loadBestScore();
     updateScoreText();
@@ -38,8 +51,17 @@ void ScoreManager::reset() {
 
 void ScoreManager::updateScoreText() {
     m_scoreText.setString(std::to_string(m_currentScore));
+    
+    // Center the score text horizontally at the top of the window
+    sf::Vector2u windowSize = m_window.getSize();
+    float windowWidth = static_cast<float>(windowSize.x);
+    float windowHeight = static_cast<float>(windowSize.y);
+    
     auto bounds = m_scoreText.getLocalBounds();
-    m_scoreText.setPosition({400 - bounds.size.x / 2, 50});
+    float x = (windowWidth - bounds.size.x) / 2.0f;
+    float y = windowHeight * 0.083f; // 8.3% from top
+    
+    m_scoreText.setPosition({x, y});
 }
 
 void ScoreManager::saveBestScore() {

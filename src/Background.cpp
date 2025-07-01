@@ -5,7 +5,6 @@
 
 const float Background::BACKGROUND_SPEED = 50.0f;
 const float Background::GROUND_SPEED = 100.0f;
-const float Background::GROUND_Y = 550.0f;
 
 Background::Background(sf::RenderWindow& window, AssetManager &assetManager)
     : m_window(window),
@@ -16,12 +15,26 @@ Background::Background(sf::RenderWindow& window, AssetManager &assetManager)
       m_ground2(m_assetManager.getTexture("ground")),
       m_backgroundOffset(0.0f),
       m_groundOffset(0.0f) {
+    
+    // Get window dimensions
+    sf::Vector2u windowSize = m_window.getSize();
+    float windowWidth = static_cast<float>(windowSize.x);
+    float windowHeight = static_cast<float>(windowSize.y);
+    
+    // Calculate ground Y position based on window height (90% down from top)
+    m_groundY = windowHeight * 0.9f;
+    
     // Setup background sprites
     m_background1.setTexture(m_assetManager.getTexture("background"));
     m_background2.setTexture(m_assetManager.getTexture("background"));
 
-    m_background1.setScale({2.0f, 2.0f});
-    m_background2.setScale({2.0f, 2.0f});
+    // Calculate scale to fit window height
+    sf::Vector2u bgTextureSize = m_background1.getTexture()->getSize();
+    float bgScaleY = windowHeight / static_cast<float>(bgTextureSize.y);
+    float bgScaleX = bgScaleY; // Maintain aspect ratio
+    
+    m_background1.setScale({bgScaleX, bgScaleY});
+    m_background2.setScale({bgScaleX, bgScaleY});
 
     m_background1.setPosition({0, 0});
     m_background2.setPosition({m_background1.getGlobalBounds().size.x, 0});
@@ -30,11 +43,16 @@ Background::Background(sf::RenderWindow& window, AssetManager &assetManager)
     m_ground1.setTexture(m_assetManager.getTexture("ground"));
     m_ground2.setTexture(m_assetManager.getTexture("ground"));
 
-    m_ground1.setScale({2.0f, 2.0f});
-    m_ground2.setScale({2.0f, 2.0f});
+    // Calculate scale for ground to fit window width
+    sf::Vector2u groundTextureSize = m_ground1.getTexture()->getSize();
+    float groundScaleX = windowWidth / static_cast<float>(groundTextureSize.x);
+    float groundScaleY = (windowHeight - m_groundY) / static_cast<float>(groundTextureSize.y);
+    
+    m_ground1.setScale({groundScaleX, groundScaleY});
+    m_ground2.setScale({groundScaleX, groundScaleY});
 
-    m_ground1.setPosition({0, GROUND_Y});
-    m_ground2.setPosition({m_ground1.getGlobalBounds().size.x, GROUND_Y});
+    m_ground1.setPosition({0, m_groundY});
+    m_ground2.setPosition({m_ground1.getGlobalBounds().size.x, m_groundY});
 }
 
 void Background::update(float deltaTime) {
@@ -57,8 +75,8 @@ void Background::update(float deltaTime) {
         m_groundOffset = 0.0f;
     }
 
-    m_ground1.setPosition({-m_groundOffset, GROUND_Y});
-    m_ground2.setPosition({groundWidth - m_groundOffset, GROUND_Y});
+    m_ground1.setPosition({-m_groundOffset, m_groundY});
+    m_ground2.setPosition({groundWidth - m_groundOffset, m_groundY});
 }
 
 void Background::render() {
@@ -71,4 +89,8 @@ void Background::render() {
 void Background::reset() {
     m_backgroundOffset = 0.0f;
     m_groundOffset = 0.0f;
+}
+
+float Background::getGroundY() const {
+    return m_groundY;
 }
