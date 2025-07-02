@@ -9,9 +9,9 @@ Game::Game()
     m_window.setFramerateLimit(120);
 
     // Load all assets
-    m_assetManager->loadTexture("bird", "assets/sprites/Player/StyleBird1/Bird1-1.png");
-    m_assetManager->loadTexture("background", "assets/sprites/Background/Background1.png");
-    m_assetManager->loadTexture("pipe", "assets/sprites/Tiles/Style 1/PipeStyle1.png");
+    m_assetManager->loadTexture("bird", "assets/sprites/Player/StyleBird1/Bird1-2.png");
+    m_assetManager->loadTexture("background", "assets/sprites/Background/Background2.png");
+    m_assetManager->loadTexture("pipe", "assets/sprites/Tiles/Style 2/PipeStyle2.png");
     m_assetManager->loadTexture("ground", "assets/sprites/Tiles/Style 1/TileStyle1.png");
 
     m_assetManager->loadFont("main", "assets/fonts/MegamaxJonathanToo.ttf");

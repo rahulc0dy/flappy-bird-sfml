@@ -11,35 +11,27 @@ Background::Background(sf::RenderWindow &window, AssetManager &assetManager)
       m_ground(m_assetManager.getTexture("ground")),
       m_backgroundOffset(0.0f),
       m_groundOffset(0.0f) {
-    sf::Vector2u windowSize = m_window.getSize();
-    auto windowWidth = static_cast<float>(windowSize.x);
-    auto windowHeight = static_cast<float>(windowSize.y);
+    m_groundY = m_window.getSize().y * 0.9f;
 
-    // Calculate ground Y position (90% down from top)
-    m_groundY = windowHeight * 0.9f;
-
-    // Setup background sprite: scale so its height matches m_groundY.
     sf::Vector2u bgTexSize = m_background.getTexture().getSize();
     float bgScale = m_groundY / static_cast<float>(bgTexSize.y);
     m_background.setScale({bgScale, bgScale});
     m_background.setPosition({0, 0});
 
     sf::Vector2u groundTexSize = m_ground.getTexture().getSize();
-    float groundScaleX = windowWidth / static_cast<float>(groundTexSize.x);
-    float groundScaleY = (windowHeight - m_groundY) / static_cast<float>(groundTexSize.y);
+    float groundScaleX = m_window.getSize().x / static_cast<float>(groundTexSize.x);
+    float groundScaleY = (m_window.getSize().y - m_groundY) / static_cast<float>(groundTexSize.y);
     m_ground.setScale({groundScaleX, groundScaleY});
     m_ground.setPosition({0, m_groundY});
 }
 
 void Background::update(float deltaTime) {
-    // Update background offset
     m_backgroundOffset += BACKGROUND_SPEED * deltaTime;
     float bgWidth = m_background.getGlobalBounds().size.x;
     if (m_backgroundOffset >= bgWidth) {
         m_backgroundOffset = std::fmod(m_backgroundOffset, bgWidth);
     }
 
-    // Update ground offset
     m_groundOffset += GROUND_SPEED * deltaTime;
     float groundWidth = m_ground.getGlobalBounds().size.x;
     if (m_groundOffset >= groundWidth) {
@@ -48,27 +40,23 @@ void Background::update(float deltaTime) {
 }
 
 void Background::render() {
-    // Draw background: two copies for seamless scrolling
-    sf::Sprite bg1 = m_background;
-    bg1.setPosition({-m_backgroundOffset, 0});
-    m_window.draw(bg1);
-
-    sf::Sprite bg2 = m_background;
+    // Draw background tiles
     float bgWidth = m_background.getGlobalBounds().size.x;
-    // Fixed: Position the second tile immediately after the first
-    bg2.setPosition({-m_backgroundOffset + bgWidth, 0});
-    m_window.draw(bg2);
+    int numBgTiles = static_cast<int>(std::ceil(m_window.getSize().x / bgWidth)) + 1;
+    for (int i = 0; i < numBgTiles; ++i) {
+        sf::Sprite bg = m_background;
+        bg.setPosition({-m_backgroundOffset + i * bgWidth, 0});
+        m_window.draw(bg);
+    }
 
-    // Draw ground: two copies for seamless scrolling
-    sf::Sprite ground1 = m_ground;
-    ground1.setPosition({-m_groundOffset, m_groundY});
-    m_window.draw(ground1);
-
-    sf::Sprite ground2 = m_ground;
+    // Draw ground tiles
     float groundWidth = m_ground.getGlobalBounds().size.x;
-    // Fixed: Position the second ground tile immediately after the first
-    ground2.setPosition({-m_groundOffset + groundWidth, m_groundY});
-    m_window.draw(ground2);
+    int numGroundTiles = static_cast<int>(std::ceil(m_window.getSize().x / groundWidth)) + 1;
+    for (int i = 0; i < numGroundTiles; ++i) {
+        sf::Sprite ground = m_ground;
+        ground.setPosition({-m_groundOffset + i * groundWidth, m_groundY});
+        m_window.draw(ground);
+    }
 }
 
 void Background::reset() {
