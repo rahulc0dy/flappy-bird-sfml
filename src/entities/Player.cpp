@@ -6,27 +6,25 @@ const float Player::GRAVITY = 980.0f;
 const float Player::JUMP_FORCE = -350.0f;
 const float Player::MAX_FALL_SPEED = 500.0f;
 
-Player::Player(sf::RenderWindow& window, AssetManager &assetManager)
+Player::Player(sf::RenderWindow &window, AssetManager &assetManager)
     : m_window(window),
       m_assetManager(assetManager),
       m_sprite(m_assetManager.getTexture("bird")),
       m_velocity(0.0f, 0.0f),
       m_currentFrame(0),
       m_animationTimer(0.0f) {
-    
-    // Get window dimensions for dynamic positioning
     sf::Vector2u windowSize = m_window.getSize();
     float windowWidth = static_cast<float>(windowSize.x);
     float windowHeight = static_cast<float>(windowSize.y);
-    
+
     // Calculate dynamic positions based on window size
     m_startX = windowWidth * 0.125f; // 12.5% from left
-    m_startY = windowHeight * 0.5f;  // Center vertically
+    m_startY = windowHeight * 0.5f; // Center vertically
     m_groundY = windowHeight * 0.9f; // 90% down from top
-    
+
     m_sprite.setTexture(m_assetManager.getTexture("bird"));
     m_sprite.setTextureRect(sf::IntRect({0, 0}, {FRAME_WIDTH, FRAME_HEIGHT}));
-    
+
     // Calculate scale based on window size
     float scale = std::min(windowWidth / 400.0f, windowHeight / 300.0f);
     m_sprite.setScale({scale, scale});

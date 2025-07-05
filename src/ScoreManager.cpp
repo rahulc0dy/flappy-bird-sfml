@@ -2,27 +2,26 @@
 #include <fstream>
 #include <iostream>
 
-ScoreManager::ScoreManager(sf::RenderWindow& window, AssetManager &assetManager)
+ScoreManager::ScoreManager(sf::RenderWindow &window, AssetManager &assetManager)
     : m_window(window),
       m_assetManager(assetManager),
       m_scoreText(m_assetManager.getFont("pixel")),
       m_currentScore(0),
       m_bestScore(0) {
-    
     // Get window dimensions for dynamic sizing
     sf::Vector2u windowSize = m_window.getSize();
     float windowWidth = static_cast<float>(windowSize.x);
     float windowHeight = static_cast<float>(windowSize.y);
-    
+
     m_scoreText.setFont(m_assetManager.getFont("pixel"));
-    
+
     // Calculate font size based on window size
     unsigned int fontSize = static_cast<unsigned int>(windowHeight * 0.053f); // 5.3% of window height
     m_scoreText.setCharacterSize(fontSize);
-    
+
     m_scoreText.setFillColor(sf::Color::White);
     m_scoreText.setOutlineColor(sf::Color::Black);
-    
+
     // Calculate outline thickness based on window size
     float outlineThickness = windowHeight * 0.003f; // 0.3% of window height
     m_scoreText.setOutlineThickness(outlineThickness);
@@ -51,16 +50,18 @@ void ScoreManager::reset() {
 
 void ScoreManager::updateScoreText() {
     m_scoreText.setString(std::to_string(m_currentScore));
-    
-    // Center the score text horizontally at the top of the window
     sf::Vector2u windowSize = m_window.getSize();
     float windowWidth = static_cast<float>(windowSize.x);
     float windowHeight = static_cast<float>(windowSize.y);
-    
-    auto bounds = m_scoreText.getLocalBounds();
-    float x = (windowWidth - bounds.size.x) / 2.0f;
-    float y = windowHeight * 0.083f; // 8.3% from top
-    
+
+    unsigned int fontSize = static_cast<unsigned int>(windowHeight * 0.053f);
+    m_scoreText.setCharacterSize(fontSize);
+
+    sf::FloatRect bounds = m_scoreText.getLocalBounds();
+
+    float x = (windowWidth - bounds.size.x) / 2.0f - bounds.position.x;
+    float y = windowHeight * 0.083f - bounds.position.y;
+
     m_scoreText.setPosition({x, y});
 }
 

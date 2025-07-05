@@ -25,6 +25,6 @@ private:
     std::unique_ptr<AssetManager> m_assetManager;
     sf::Clock m_clock;
 
-    static const int WINDOW_WIDTH = 800;
-    static const int WINDOW_HEIGHT = 600;
+    static const int WINDOW_WIDTH = 1200;
+    static const int WINDOW_HEIGHT = 800;
 };
